@@ -1,0 +1,46 @@
+
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BOARD)
+
+TRIG = 40
+ECHO = 38
+i=0
+
+GPIO.setup(TRIG,GPIO.OUT)
+GPIO.setup(ECHO,GPIO.IN)
+
+GPIO.output(TRIG, False)
+print ("Calibrando.....")
+time.sleep(2)
+
+print ("Objeto muy alejado......")
+
+try:
+    while True:
+       GPIO.output(TRIG, True)
+       time.sleep(0.00001)
+       GPIO.output(TRIG, False)
+
+       while GPIO.input(ECHO)==0:
+          inicio_pulso = time.time()
+
+       while GPIO.input(ECHO)==1:
+          fin_pulso = time.time()
+
+       duracion_pulso = fin_pulso - inicio_pulso
+       distancia = duracion_pulso * 17150
+       distancia = round(distancia+1.15, 2)
+  
+       if distancia<=20 and distancia>=5:
+          print ("distancia:",distancia,"cm")
+          i=1
+          
+       if distancia>20 and i==1:
+          print ("Objeto muy alejado....")
+          i=0
+       time.sleep(2)
+
+except KeyboardInterrupt:
+     GPIO.cleanup()
