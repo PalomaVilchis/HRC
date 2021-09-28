@@ -1,0 +1,47 @@
+mport RPi.GPIO as GPIO
+Import time
+From date time import date time
+
+GPIO.setmode(GPIO.BCM)
+GPIO_TRIGGER = 23
+GPIO_ECHO = 24
+GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
+GPIO.setup(GPIO_ECHO, GEPIO.IN)
+GPIO.output(GPIO_TRIGGER, False)
+
+sFileStamp = time.str(`%Y%m%d%H`)
+sFileName = ‘out/‘ + sFileStamp +’.txt’
+f=open(sFileName, ‘a’)
+F.write(‘TimeStamp,Value’ + ‘\n’)
+Print “ Inicia toma de datos”
+
+Try:
+	while True:
+	print “Esperando sensor”
+	GPIO.output(GPIO_TRIGGER, True)
+	time.sleep(0.00001)
+	GPIO.output(GPIO_TRIGGER, False)
+	start = time.time()
+	while GPIO.input (GPIO_ECHO) ==0:
+		start = time.time()
+	while GPIO.input (GPIO_ECHO) ==1:	
+		stop = time.time()
+	elapsed = stop-start
+	distance = (elaspsed * 34300)/2
+	sTimeStamp = time.strftime(`%Y%m%d%H%M%S`)
+	f.write(sTimeStamp + ‘,’+ str(distance) + ’\n’)
+	print sTimeStamp + ‘ ’+ str(distance)
+	time.sleep(1)
+	sTmpFileStamp = time.strftime(`%Y%m%d%H’)
+	if sTmpFileStamp <> sFileStamp:
+		f.close
+		sFileName = ‘Out/‘ + sTmpFileStamp + ‘.txt’
+		f=open(sFileName, ‘a’)
+
+Except KeboardInterrupt:
+	print \’n’ + ‘termina la toma de datos’ + ‘\n’
+	f.close
+	GPIO.cleanup()
+
+
+
